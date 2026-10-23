@@ -18,13 +18,13 @@
     "quote": {
       "policy_id": 1,
       "url": "/insurer/KA01AB1234",
-      "fetched": "2026-10-23T14:43:25",
+      "fetched": "2026-10-23T16:28:32",
       "cover": 500000,
       "premium": 11200,
       "ncb": 20,
       "extractor": "parser (Gemini not used)",
       "summary": "ALERT: Renewal premium increased from ₹11,000 to ₹11,200; Expires in exactly 30 days — renewal alert required",
-      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹500,000, Premium=₹11,200, NCB=20%",
+      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹5,00,000, Premium=₹11,200, NCB=20%",
       "id": 1
     },
     "verify": {
@@ -36,18 +36,18 @@
         "premium": 11200,
         "ncb": 20
       },
-      "evidence": "Live portal state re-read: Cover=₹500,000, Premium=₹11,200, NCB=20%. Verified against stored quote #1."
+      "evidence": "Live portal state re-read: Cover=₹5,00,000, Premium=₹11,200, NCB=20%. Verified against stored quote #1."
     },
     "evidence": [
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 PLAN: KA01AB1234 expires 2026-11-22 (30 days) -> alert; compare renewal with last year's cover",
-      "2026-10-23T14:43:25 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/KA01AB1234",
-      "2026-10-23T14:43:25 APPROVED: Action approved by Human User: GET /insurer/KA01AB1234",
-      "2026-10-23T14:43:25 TOOL CALL: GET /insurer/KA01AB1234 -> cover=500000 premium=11200 ncb=20",
-      "2026-10-23T14:43:25 DECIDE: alert - Renewal premium increased from ₹11,000 to ₹11,200; Expires in exactly 30 days — renewal alert required [parser (Gemini not used)]",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 PLAN: KA01AB1234 expires 2026-11-22 (30 days) -> alert; compare renewal with last year's cover",
+      "2026-10-23T16:28:32 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/KA01AB1234",
+      "2026-10-23T16:28:32 APPROVED: Action approved by Human User: GET /insurer/KA01AB1234",
+      "2026-10-23T16:28:32 TOOL CALL: GET /insurer/KA01AB1234 -> cover=500000 premium=11200 ncb=20",
+      "2026-10-23T16:28:32 DECIDE: alert - Renewal premium increased from ₹11,000 to ₹11,200; Expires in exactly 30 days — renewal alert required [parser (Gemini not used)]",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
     ]
   },
   {
@@ -69,13 +69,13 @@
     "quote": {
       "policy_id": 2,
       "url": "/insurer/HLTH-7788",
-      "fetched": "2026-10-23T14:43:25",
+      "fetched": "2026-10-23T16:28:32",
       "cover": 300000,
       "premium": 18400,
       "ncb": 0,
       "extractor": "parser (Gemini not used)",
-      "summary": "FLAGGED: Cover reduced from ₹500,000 to ₹300,000 (-₹200,000 / -40%); Renewal premium increased from ₹18,000 to ₹18,400",
-      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹300,000, Premium=₹18,400, NCB=0%",
+      "summary": "FLAGGED: Cover reduced from ₹5,00,000 to ₹3,00,000 (-₹2,00,000 / -40%); Renewal premium increased from ₹18,000 to ₹18,400",
+      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹3,00,000, Premium=₹18,400, NCB=0%",
       "id": 2
     },
     "verify": {
@@ -87,18 +87,18 @@
         "premium": 18400,
         "ncb": 0
       },
-      "evidence": "Live portal state re-read: Cover=₹300,000, Premium=₹18,400, NCB=0%. Verified against stored quote #2."
+      "evidence": "Live portal state re-read: Cover=₹3,00,000, Premium=₹18,400, NCB=0%. Verified against stored quote #2."
     },
     "evidence": [
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 PLAN: HLTH-7788 expires 2026-12-07 (45 days) -> ok; compare renewal with last year's cover",
-      "2026-10-23T14:43:25 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/HLTH-7788",
-      "2026-10-23T14:43:25 APPROVED: Action approved by Human User: GET /insurer/HLTH-7788",
-      "2026-10-23T14:43:25 TOOL CALL: GET /insurer/HLTH-7788 -> cover=300000 premium=18400 ncb=0",
-      "2026-10-23T14:43:25 DECIDE: flagged - Cover reduced from ₹500,000 to ₹300,000 (-₹200,000 / -40%); Renewal premium increased from ₹18,000 to ₹18,400 [parser (Gemini not used)]",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)"
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 PLAN: HLTH-7788 expires 2026-12-07 (45 days) -> ok; compare renewal with last year's cover",
+      "2026-10-23T16:28:32 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/HLTH-7788",
+      "2026-10-23T16:28:32 APPROVED: Action approved by Human User: GET /insurer/HLTH-7788",
+      "2026-10-23T16:28:32 TOOL CALL: GET /insurer/HLTH-7788 -> cover=300000 premium=18400 ncb=0",
+      "2026-10-23T16:28:32 DECIDE: flagged - Cover reduced from ₹5,00,000 to ₹3,00,000 (-₹2,00,000 / -40%); Renewal premium increased from ₹18,000 to ₹18,400 [parser (Gemini not used)]",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)"
     ]
   },
   {
@@ -121,13 +121,13 @@
     "quote": {
       "policy_id": 3,
       "url": "/insurer/MH14EF9012",
-      "fetched": "2026-10-23T14:43:25",
+      "fetched": "2026-10-23T16:28:32",
       "cover": 600000,
       "premium": 13900,
       "ncb": null,
       "extractor": "parser (Gemini not used)",
       "summary": "FLAGGED: No-claim bonus missing/reduced (last year was 25%, renewal quote shows missing); Renewal premium increased from ₹13,500 to ₹13,900",
-      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹600,000, Premium=₹13,900, NCB=null%",
+      "evidence_snippet": "Quote fetched from live mock portal. Parser/Extractor observed: Cover=₹6,00,000, Premium=₹13,900, NCB=null%",
       "id": 3
     },
     "verify": {
@@ -139,18 +139,18 @@
         "premium": 13900,
         "ncb": null
       },
-      "evidence": "Live portal state re-read: Cover=₹600,000, Premium=₹13,900, NCB=null%. Verified against stored quote #3."
+      "evidence": "Live portal state re-read: Cover=₹6,00,000, Premium=₹13,900, NCB=null%. Verified against stored quote #3."
     },
     "evidence": [
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 PLAN: MH14EF9012 expires 2026-12-22 (60 days) -> ok; compare renewal with last year's cover",
-      "2026-10-23T14:43:25 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/MH14EF9012",
-      "2026-10-23T14:43:25 APPROVED: Action approved by Human User: GET /insurer/MH14EF9012",
-      "2026-10-23T14:43:25 TOOL CALL: GET /insurer/MH14EF9012 -> cover=600000 premium=13900 ncb=null",
-      "2026-10-23T14:43:25 DECIDE: flagged - No-claim bonus missing/reduced (last year was 25%, renewal quote shows missing); Renewal premium increased from ₹13,500 to ₹13,900 [parser (Gemini not used)]",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
-      "2026-10-23T14:43:25 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 PLAN: MH14EF9012 expires 2026-12-22 (60 days) -> ok; compare renewal with last year's cover",
+      "2026-10-23T16:28:32 APPROVAL: Waiting for human approval to fetch renewal quote from /insurer/MH14EF9012",
+      "2026-10-23T16:28:32 APPROVED: Action approved by Human User: GET /insurer/MH14EF9012",
+      "2026-10-23T16:28:32 TOOL CALL: GET /insurer/MH14EF9012 -> cover=600000 premium=13900 ncb=null",
+      "2026-10-23T16:28:32 DECIDE: flagged - No-claim bonus missing/reduced (last year was 25%, renewal quote shows missing); Renewal premium increased from ₹13,500 to ₹13,900 [parser (Gemini not used)]",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
+      "2026-10-23T16:28:32 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
     ]
   },
   {
@@ -172,10 +172,10 @@
     "quote": null,
     "verify": null,
     "evidence": [
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 VALIDATE: Policy validation: PASSED",
-      "2026-10-23T14:43:25 PLAN: DL3CGH3456 expires 2026-10-13 (-10 days) -> lapsed; compare renewal with last year's cover",
-      "2026-10-23T14:43:25 DECIDE: policy expired -> marked lapsed; no quote fetched"
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 VALIDATE: Policy validation: PASSED",
+      "2026-10-23T16:28:32 PLAN: DL3CGH3456 expires 2026-10-13 (-10 days) -> lapsed; compare renewal with last year's cover",
+      "2026-10-23T16:28:32 DECIDE: policy expired -> marked lapsed; no quote fetched"
     ]
   }
 ]

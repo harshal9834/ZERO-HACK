@@ -106,17 +106,37 @@ export class PolicyStore {
   }
 
   public getPolicyByNo(no: string): Policy | undefined {
-    return this.policies.find((p) => p.policy_no === no);
+    if (!no) return undefined;
+    const clean = no.trim().toUpperCase();
+    return this.policies.find((p) => p.policy_no.trim().toUpperCase() === clean);
   }
 
-  public addPolicy(p: Omit<Policy, 'id' | 'status'>): Policy {
+  public upsertPolicy(p: Omit<Policy, 'id' | 'status'>): { policy: Policy; isNew: boolean } {
+    const cleanNo = p.policy_no.trim().toUpperCase();
+    const existing = this.getPolicyByNo(cleanNo);
+    if (existing) {
+      existing.holder = p.holder || existing.holder;
+      existing.kind = p.kind || existing.kind;
+      existing.insurer = p.insurer || existing.insurer;
+      existing.expiry = p.expiry;
+      existing.last_cover = p.last_cover;
+      existing.last_ncb = p.last_ncb;
+      if (p.last_premium !== undefined) existing.last_premium = p.last_premium;
+      return { policy: existing, isNew: false };
+    }
+
     const newPolicy: Policy = {
       ...p,
+      policy_no: cleanNo,
       id: this.nextPolicyId++,
       status: 'new',
     };
     this.policies.push(newPolicy);
-    return newPolicy;
+    return { policy: newPolicy, isNew: true };
+  }
+
+  public addPolicy(p: Omit<Policy, 'id' | 'status'>): Policy {
+    return this.upsertPolicy(p).policy;
   }
 
   public updatePolicy(id: number, updates: Partial<Policy>): void {

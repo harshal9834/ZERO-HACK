@@ -85,15 +85,27 @@ async function startServer() {
   });
 
   app.post('/api/mock/:policyNo', (req: Request, res: Response) => {
-    const { insurer, product, cover, premium, ncb } = req.body;
-    mockInsurer.setMockQuote(req.params.policyNo, {
-      insurer: insurer || 'Acme Motor',
-      product: product || 'Standard Policy Cover',
-      cover: Number(cover) || 500000,
-      premium: Number(premium) || 10000,
-      ncb: ncb || null,
-    });
-    res.json({ success: true, quote: mockInsurer.getMockQuote(req.params.policyNo) });
+    try {
+      const { insurer, product, cover, premium, ncb } = req.body || {};
+      let formattedNcb: string | null = null;
+      if (ncb !== null && ncb !== undefined) {
+        const clean = String(ncb).trim();
+        if (clean !== '' && clean !== '-' && clean.toLowerCase() !== 'null' && clean.toLowerCase() !== 'none') {
+          formattedNcb = clean.endsWith('%') ? clean : `${clean}%`;
+        }
+      }
+
+      mockInsurer.setMockQuote(req.params.policyNo, {
+        insurer: insurer || 'Acme Motor',
+        product: product || 'Standard Policy Cover',
+        cover: Number(cover) || 500000,
+        premium: Number(premium) || 10000,
+        ncb: formattedNcb,
+      });
+      res.json({ success: true, quote: mockInsurer.getMockQuote(req.params.policyNo) });
+    } catch (err: any) {
+      res.status(500).json({ error: err.message });
+    }
   });
 
   // 4. Policy Renewal Data
@@ -177,33 +189,55 @@ async function startServer() {
   });
 
   // 10. Add new policy
+  // 10. Add or update policy (idempotent; prevents duplicates on retry/correct)
   app.post('/api/policies', (req: Request, res: Response) => {
-    const { holder, kind, insurer, policy_no, expiry, last_cover, last_ncb, mock_cover, mock_premium, mock_ncb } = req.body;
-    if (!policy_no || !expiry) {
-      res.status(400).json({ error: 'policy_no and expiry are required' });
-      return;
+    try {
+      const { holder, kind, insurer, policy_no, expiry, last_cover, last_ncb, mock_cover, mock_premium, mock_ncb } = req.body || {};
+      if (!policy_no || !String(policy_no).trim()) {
+        res.status(400).json({ error: 'policy_no is required' });
+        return;
+      }
+      if (!expiry || !String(expiry).trim()) {
+        res.status(400).json({ error: 'expiry is required' });
+        return;
+      }
+
+      const cleanPolicyNo = String(policy_no).trim().toUpperCase();
+
+      // Upsert policy to prevent duplicate policies when retrying or correcting
+      const { policy: p, isNew } = db.upsertPolicy({
+        holder: holder || 'Sharma family',
+        kind: kind || 'Car',
+        insurer: insurer || 'Acme Motor',
+        policy_no: cleanPolicyNo,
+        expiry: String(expiry).trim(),
+        last_cover: Number(last_cover) || 500000,
+        last_ncb: last_ncb !== undefined && last_ncb !== null && last_ncb !== '' ? Number(last_ncb) : 0,
+      });
+
+      // Safely parse and format mock NCB without crashing on blank/null/undefined
+      let formattedNcb: string | null = null;
+      if (mock_ncb !== null && mock_ncb !== undefined) {
+        const clean = String(mock_ncb).trim();
+        if (clean !== '' && clean !== '-' && clean.toLowerCase() !== 'null' && clean.toLowerCase() !== 'none') {
+          formattedNcb = clean.endsWith('%') ? clean : `${clean}%`;
+        }
+      }
+
+      // Also register/update mock quote for this policy
+      mockInsurer.setMockQuote(cleanPolicyNo, {
+        insurer: insurer || 'Acme Motor',
+        product: `${kind || 'General'} protection plan`,
+        cover: Number(mock_cover !== undefined && mock_cover !== '' ? mock_cover : (last_cover || 500000)),
+        premium: Number(mock_premium) || 12000,
+        ncb: formattedNcb,
+      });
+
+      res.json({ success: true, policy: p, isNew });
+    } catch (err: any) {
+      console.error('Error in POST /api/policies:', err);
+      res.status(500).json({ error: err.message || 'Internal server error' });
     }
-
-    const p = db.addPolicy({
-      holder: holder || 'Sharma family',
-      kind: kind || 'Car',
-      insurer: insurer || 'Acme Motor',
-      policy_no: policy_no.trim(),
-      expiry,
-      last_cover: Number(last_cover) || 500000,
-      last_ncb: Number(last_ncb) || 0,
-    });
-
-    // Also register mock quote for this policy if not already present
-    mockInsurer.setMockQuote(policy_no.trim(), {
-      insurer: insurer || 'Acme Motor',
-      product: `${kind || 'General'} protection plan`,
-      cover: Number(mock_cover !== undefined ? mock_cover : last_cover),
-      premium: Number(mock_premium) || 12000,
-      ncb: mock_ncb !== undefined && mock_ncb !== '' ? (mock_ncb.endsWith('%') ? mock_ncb : `${mock_ncb}%`) : null,
-    });
-
-    res.json({ success: true, policy: p });
   });
 
   // 11. Reset database to default synthetic Sharma family policies
