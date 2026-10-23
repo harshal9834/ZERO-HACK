@@ -1,0 +1,7 @@
+{
+  "name": "Policy Renewal Tracker & Agent Audit",
+  "description": "Autonomous policy renewal agent with human-in-the-loop approval, Gemini quote extraction with parser cross-check, deterministic rules, and audit verification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

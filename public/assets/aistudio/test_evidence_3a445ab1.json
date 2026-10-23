@@ -1,0 +1,132 @@
+[
+ {
+  "id": "TC1",
+  "scenario": "Policy expiring in 30 days",
+  "input": {
+   "policy": "KA01AB1234",
+   "expiry": "2026-11-22",
+   "last_year_cover": 500000,
+   "last_year_ncb": 20
+  },
+  "expected": "alert",
+  "actual": "alert",
+  "passed": true,
+  "quote": {
+   "id": 1,
+   "policy_id": 1,
+   "url": "/insurer/KA01AB1234",
+   "fetched": "2026-10-23T13:43:09",
+   "cover": 500000,
+   "premium": 11200,
+   "ncb": 20,
+   "extractor": "parser (Gemini not used)",
+   "summary": "ALERT: expires in 30 day(s)"
+  },
+  "verify": {
+   "quote_matches_page": true,
+   "cover_vs_last_year": "unchanged"
+  },
+  "evidence": [
+   "2026-10-23T13:43:09 PLAN: KA01AB1234 expires 2026-11-22 (30 days) -> alert; compare renewal with last year's cover",
+   "2026-10-23T13:43:09 APPROVAL: waiting for human approval to fetch renewal quote from /insurer/KA01AB1234",
+   "2026-10-23T13:43:09 APPROVED: human approved fetch of /insurer/KA01AB1234",
+   "2026-10-23T13:43:09 TOOL CALL: GET /insurer/KA01AB1234 -> cover=500000 premium=11200 ncb=20",
+   "2026-10-23T13:43:09 DECIDE: alert - expires in 30 day(s) [parser (Gemini not used)]",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
+  ]
+ },
+ {
+  "id": "TC2",
+  "scenario": "Cover reduced in quote",
+  "input": {
+   "policy": "HLTH-7788",
+   "expiry": "2026-12-07",
+   "last_year_cover": 500000,
+   "last_year_ncb": 0
+  },
+  "expected": "flagged",
+  "actual": "flagged",
+  "passed": true,
+  "quote": {
+   "id": 2,
+   "policy_id": 2,
+   "url": "/insurer/HLTH-7788",
+   "fetched": "2026-10-23T13:43:09",
+   "cover": 300000,
+   "premium": 18400,
+   "ncb": 0,
+   "extractor": "parser (Gemini not used)",
+   "summary": "FLAGGED: cover reduced 500,000 -> 300,000"
+  },
+  "verify": {
+   "quote_matches_page": true,
+   "cover_vs_last_year": "CHANGED (500000 -> 300000)"
+  },
+  "evidence": [
+   "2026-10-23T13:43:09 PLAN: HLTH-7788 expires 2026-12-07 (45 days) -> ok; compare renewal with last year's cover",
+   "2026-10-23T13:43:09 APPROVAL: waiting for human approval to fetch renewal quote from /insurer/HLTH-7788",
+   "2026-10-23T13:43:09 APPROVED: human approved fetch of /insurer/HLTH-7788",
+   "2026-10-23T13:43:09 TOOL CALL: GET /insurer/HLTH-7788 -> cover=300000 premium=18400 ncb=0",
+   "2026-10-23T13:43:09 DECIDE: flagged - cover reduced 500,000 -> 300,000 [parser (Gemini not used)]",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: CHANGED (500000 -> 300000)"
+  ]
+ },
+ {
+  "id": "TC3",
+  "scenario": "No-claim bonus missing",
+  "input": {
+   "policy": "MH14EF9012",
+   "expiry": "2026-12-22",
+   "last_year_cover": 600000,
+   "last_year_ncb": 25
+  },
+  "expected": "flagged",
+  "actual": "flagged",
+  "passed": true,
+  "quote": {
+   "id": 3,
+   "policy_id": 3,
+   "url": "/insurer/MH14EF9012",
+   "fetched": "2026-10-23T13:43:09",
+   "cover": 600000,
+   "premium": 13900,
+   "ncb": null,
+   "extractor": "parser (Gemini not used)",
+   "summary": "FLAGGED: no-claim bonus missing/reduced (last year 25%, quote none)"
+  },
+  "verify": {
+   "quote_matches_page": true,
+   "cover_vs_last_year": "unchanged"
+  },
+  "evidence": [
+   "2026-10-23T13:43:09 PLAN: MH14EF9012 expires 2026-12-22 (60 days) -> ok; compare renewal with last year's cover",
+   "2026-10-23T13:43:09 APPROVAL: waiting for human approval to fetch renewal quote from /insurer/MH14EF9012",
+   "2026-10-23T13:43:09 APPROVED: human approved fetch of /insurer/MH14EF9012",
+   "2026-10-23T13:43:09 TOOL CALL: GET /insurer/MH14EF9012 -> cover=600000 premium=13900 ncb=None",
+   "2026-10-23T13:43:09 DECIDE: flagged - no-claim bonus missing/reduced (last year 25%, quote none) [parser (Gemini not used)]",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: unchanged",
+   "2026-10-23T13:43:09 VERIFY: stored quote matches live page: True; cover vs last year: unchanged"
+  ]
+ },
+ {
+  "id": "TC4",
+  "scenario": "Expired policy",
+  "input": {
+   "policy": "DL3CGH3456",
+   "expiry": "2026-10-13",
+   "last_year_cover": 80000,
+   "last_year_ncb": 50
+  },
+  "expected": "lapsed",
+  "actual": "lapsed",
+  "passed": true,
+  "quote": null,
+  "verify": null,
+  "evidence": [
+   "2026-10-23T13:43:09 PLAN: DL3CGH3456 expires 2026-10-13 (-10 days) -> lapsed; compare renewal with last year's cover",
+   "2026-10-23T13:43:09 DECIDE: policy expired -> marked lapsed; no quote fetched"
+  ]
+ }
+]
